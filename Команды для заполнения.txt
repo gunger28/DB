@@ -1,0 +1,759 @@
+create database pharma;
+
+
+\c pharma
+
+
+create table types(id serial, typeMed text, age int, temp int);
+insert into types (typeMed,age, temp) values('mixture', 3, 22),('drops',4, 14),('syrup',5,31),('capsuls',2,11),('suspension',4,5),('powder',9,14),('granules',4,45),('ointment',4,2),('tincture',2,3),('pills',4,17);
+
+
+create table companies(id serial, name text, country_id int);
+insert into companies (name,country_id) values('DrBraff',1),('healtPlus',3),('herbal',3),('chemmedical',2),('natureLife',4),('twopills',1),('painless',3),('petro',4),('gorlet',2);
+
+
+create table data_info(id serial, company_id int, date date, shelf_life int, effect_time int, provider_id int);
+insert into data_info (company_id, date, shelf_life, effect_time,provider_id) values( 1, '2019.05.23', 180, 5,1),( 4, '2019.03.29', 300, 3,4),(3, '2018.08.15', 630, 8,2),( 4, '2020.01.05', 120, 1,1)
+,( 2, '2019.12.22', 320, 5,4),(6, '2020.03.09', 120, 1,2),( 3, '2017.11.19', 550, 14,1),( 7, '2018.10.11', 450, 6,3),( 4, '2020.05.15', 810, 20,3),( 5, '2019.09.25', 270, 10,2),( 3, '2020.06.26', 90, 5,1)
+,( 6, '2020.01.04', 410, 6,8),(9, '2018.11.29', 350, 14,2),( 5, '2019.12.13', 50, 12,3),( 7, '2020.05.15', 560, 14,3),( 8, '2020.04.12', 170, 2,4),( 1, '2020.06.22', 120, 15,2)
+,( 3, '2020.02.21', 720, 13,3),( 2, '2018.05.01', 470, 3,2),( 1, '2018.09.11', 590, 12,1),( 6, '2020.03.06', 20, 5,2),( 7, '2020.02.21', 370, 1,4),( 5, '2016.10.23', 1220, 5,3);
+
+
+create table pharma_info(id serial, recipe bit, disease text);
+insert into pharma_info(recipe,disease) values('1','allergy'),('0','baldness'),('1','cancer'),('1','fracture'),('0','cold'),('0','avitaminosis'),('0','acne'),('0','fungus'),('1','constipation');
+
+
+create table countries(id serial, country text);
+insert into countries(country) values('Russia'),('Belgia'),('Germany'),('Denmark'); 
+
+
+create table admission(id serial, adm_date date, count int);
+insert into admission(adm_date, count) values('2020.01.20', 214),('2020.01.27', 156),('2020.01.27', 34),('2020.01.27', 16),('2020.02.27', 128),('2020.02.27', 90),('2020.02.17', 231)
+,('2020.02.23', 150),('2020.03.25', 51),('2020.04.07', 156),('2020.04.15', 34),('2020.04.27', 16),('2020.04.29', 18),('2020.05.02', 90),('2020.05.21', 148)
+,('2020.01.27', 110),('2020.01.15', 451),('2020.06.03', 156),('2020.06.19', 74),('2020.01.21', 16),('2020.01.30', 128),('2020.03.17', 9),('2020.07.17', 231)
+,('2020.07.20', 217);
+
+
+create table selling(id serial, sell_date date, count int);
+insert into selling(sell_date, count) values('2020.10.20', 104),('2020.10.27', 16),('2020.11.27', 34),('2020.11.27', 16),('2020.09.27', 128),('2020.10.27', 90),('2020.10.17', 231)
+,('2020.08.23', 150),('2020.08.25', 51),('2020.08.07', 156),('2020.08.15', 34),('2020.09.27', 16),('2020.08.29', 18),('2020.09.02', 90),('2020.10.21', 148)
+,('2020.08.27', 110),('2020.12.15', 451),('2020.11.03', 156),('2020.12.19', 74),('2020.12.21', 16),('2020.09.30', 128),('2020.11.17', 9),('2020.10.17', 231)
+,('2020.11.20', 217);
+
+
+create table medicaments(id serial,name text, price int, type_id int, data_info_id  int, pharma_info_id int, admission_id int, selling_id int);
+insert into medicaments(name, price, type_id, data_info_id, pharma_info_id, admission_id, selling_id) values('flukos', 104,3,1,4,1,1),('distoz1', 452,7,2,2,2,2),('cricket', 200,2,3,1,3,3),('golt', 45,9,4,8,4,4)
+,('fret', 234,7,5,2,5,5),('true', 490,2,6,7,6,6),('cret', 1800,1,7,9,7,7),('kolu', 120,6,8,7,8,8),('cert', 402,2,9,9,9,9),('boun', 346,5,10,5,10,10),('xserker', 670,1,11,8,11,11),('bentol', 129,7,12,8,12,12)
+,('derlp', 79,5,13,3,13,13),('asseml', 210,3,14,1,14,14),('lectos', 389,4,15,2,15,15),('nostu', 100,9,16,6,16,16),('moonder', 435,7,17,9,17,17),('krew', 482,10,18,2,18,18),('asseml', 152,7,19,7,19,19)
+,('lectos', 16,8,20,1,20,20),('nostu', 500,4,21,8,21,21),('moonder', 950,3,22,10,22,22),('lort', 2453,6,23,9,23,23),('molison', 530,5,24,5,24,24);
+
+
+create table providers(id serial,name text);
+insert into providers(name) values('TransOcean'),('deliverGoat'),('sideways'),('gilatTran');
+
+
+
+
+drop function getType(text);
+create or replace FUNCTION getType(text)
+RETURNS table(
+type text,
+medicament text,
+company text,
+price int,
+shelf_time int,
+disease text,
+recipe bit
+)
+AS
+$$
+BEGIN
+RETURN query
+
+select t.typemed, m.name, cs.name, m.price, di.shelf_life  , pi.disease, pi.recipe
+from medicaments m 
+inner join types t on m.type_id = t.id
+inner join data_info di on m.data_info_id = di.id
+inner join companies cs on di.company_id = cs.id
+inner join pharma_info pi on m.pharma_info_id = pi.id
+where t.typemed = $1;
+
+END;
+$$ LANGUAGE plpgsql;
+select * from getType('granules');
+
+
+
+
+drop function sorted(text,text);
+create or replace FUNCTION sorted(text,text)
+RETURNS table(
+type text,
+name text,
+price int,
+date date,
+shelf_time int
+)
+AS
+$$
+BEGIN
+
+if $2 = 'date' then
+
+RETURN query
+SELECT t.typemed, m.name, m.price, di.date, di.shelf_life
+from medicaments m 
+inner join data_info di on m.data_info_id = di.id
+inner join types t on m.type_id = t.id
+where t.typemed = $1
+order by di.date;
+end if;
+
+if $2 = 'alphabet' then
+
+RETURN query
+SELECT t.typemed, m.name, m.price, di.date, di.shelf_life
+from medicaments m 
+inner join data_info di on m.data_info_id = di.id
+inner join types t on m.type_id = t.id
+where t.typemed = $1
+order by  m.name;
+end if;
+
+if $2 = 'shelf' then
+
+RETURN query
+SELECT t.typemed, m.name, m.price, di.date, di.shelf_life
+from medicaments m 
+inner join data_info di on m.data_info_id = di.id
+inner join types t on m.type_id = t.id
+where t.typemed = $1
+order by di.shelf_life;
+end if;
+
+if $2 = 'price' then
+
+RETURN query
+SELECT t.typemed, m.name, m.price, di.date, di.shelf_life
+from medicaments m 
+inner join data_info di on m.data_info_id = di.id
+inner join types t on m.type_id = t.id
+where t.typemed = $1
+order by m.price;
+end if;
+
+END;
+$$ LANGUAGE plpgsql;
+select * from sorted('granules','date');
+select * from sorted('granules','alphabet');
+select * from sorted('granules','shelf');
+select * from sorted('granules','price');
+
+
+
+
+drop function average_price(text);
+create or replace FUNCTION average_price(text)
+RETURNS table(
+
+price NUMERIC
+)
+AS
+$$
+BEGIN
+
+if $1 = 'all' then
+RETURN query
+
+select avg(m.price) as price
+from medicaments m ;
+
+else
+
+RETURN query
+
+select avg(m.price) as price
+from medicaments m 
+inner join types t on m.type_id = t.id
+where t.typemed = $1;
+
+end if;
+
+END;
+$$ LANGUAGE plpgsql;
+select * from average_price('all');
+
+
+
+
+create or replace FUNCTION max_min_price(text)
+RETURNS table 
+(
+"Oname" text,
+"Oprice" int
+)
+as 
+$$
+BEGIN
+
+if $1 = 'max' then
+RETURN query
+SELECT name, price 
+from medicaments where price = (select max(price) from medicaments);
+
+end if;
+
+if $1 = 'min' then
+RETURN query
+SELECT name, price 
+from medicaments where price = (select min(price) from medicaments);
+
+end if;
+
+end;
+$$ language plpgsql;   
+
+
+
+
+
+
+create or replace FUNCTION overPrice(text,integer)
+RETURNS table 
+(
+P_desiase text,
+P_NAME text,
+P_PRICE int
+)
+as 
+$$
+BEGIN
+return query
+SELECT disease, name, price 
+
+from medicaments m
+inner join pharma_info pi on m.pharma_info_id = pi.id
+ where price>$2 and disease = $1;
+
+end;
+$$ language plpgsql;     
+select * from overPrice('allergy',50);
+
+
+
+
+create or replace FUNCTION intervalPrice(text,integer,integer)
+RETURNS table 
+(
+P_TYPE text,
+P_NAME text,
+P_PRICE int
+)
+as 
+$$
+BEGIN
+return query
+SELECT typemed, name, price 
+
+from medicaments m
+inner join types t on m.type_id = t.id
+ where price BETWEEN $2 and $3 and typemed = $1;
+
+end;
+$$ language plpgsql;     
+select * from intervalPrice('pills',50,1000);
+
+
+
+
+drop function chipOfAll(integer);
+create or replace FUNCTION chipOfAll(integer)
+RETURNS REAL
+as 
+$$
+DECLARE
+
+total REAL;
+chip REAL;
+
+BEGIN
+
+SELECT count(*) into total
+
+from  medicaments;
+
+SELECT count(*) into chip
+
+from  medicaments where price < $1;
+
+
+return chip/total;
+end;
+$$ language plpgsql;  
+select * from chipOfAll(100);
+
+
+
+
+drop function numbByInterval(text,integer,integer);
+create or replace FUNCTION numbByInterval(text,integer,integer)
+RETURNS table 
+(
+P_count int,
+P_name text,
+P_Number int
+)
+as 
+$$
+BEGIN
+return query
+SELECT count, cs.name, price 
+
+from  medicaments m
+inner join data_info dii on m.data_info_id = dii.id
+inner join admission ad on m.admission_id = ad.id
+inner join companies cs on dii.company_id = cs.id
+
+ where m.price BETWEEN $2 and $3 and cs.name = $1;
+
+end;
+$$ language plpgsql;     
+select * from numbByInterval('twopills',50,1000);
+
+
+
+
+drop function getNum(text,integer,integer);
+create or replace FUNCTION getNum(text,integer,integer)
+RETURNS integer 
+as 
+$$
+DECLARE
+
+summing INTEGER;
+
+BEGIN
+
+ SELECT sum(count) into summing
+from  medicaments m
+
+inner join data_info dii on m.data_info_id = dii.id
+inner join admission ad on m.admission_id = ad.id
+inner join companies cs on dii.company_id = cs.id
+
+ where m.price BETWEEN $2 and $3 and cs.name = $1;
+
+return summing; 
+end;
+$$ language plpgsql;     
+select * from getNum('twopills',50,1000);
+
+
+
+
+drop function getCompany_desiase(text,text);
+create or replace FUNCTION getCompany_desiase(text,text)
+RETURNS table 
+(
+P_medicament text,
+P_company text,
+P_disease text
+)
+as 
+$$
+BEGIN
+return query
+SELECT m.name, cs.name, pi.disease
+
+from  medicaments m
+inner join data_info di on m.data_info_id = di.id
+inner join companies cs on di.company_id = cs.id
+inner join pharma_info pi on m.pharma_info_id = pi.id
+
+
+ where cs.name = $1 and pi.disease = $2;
+
+end;
+$$ language plpgsql;     
+select * from getCompany_desiase('twopills','allergy');
+select * from getCompany_desiase('twopills','baldness');
+select * from getCompany_desiase('twopills','cancer');
+select * from getCompany_desiase('twopills','fracture');
+select * from getCompany_desiase('twopills','cold');
+select * from getCompany_desiase('twopills','avitaminosis');
+select * from getCompany_desiase('twopills','acne');
+select * from getCompany_desiase('twopills','fungus');
+select * from getCompany_desiase('twopills','constipation');
+
+
+
+
+drop function partByCompany(text);
+create or replace FUNCTION partByCompany(text)
+RETURNS REAL
+as 
+$$
+DECLARE
+
+total REAL;
+current REAL;
+
+BEGIN
+
+SELECT count(*) into total
+
+from  medicaments;
+
+SELECT count(*) into current
+
+from  medicaments m
+inner join data_info di on m.data_info_id = di.id
+inner join companies cs on di.company_id = cs.id
+
+where cs.name = $1;
+
+return current/total;
+end;
+$$ language plpgsql;  
+select * from partByCompany('twopills');
+
+
+
+
+drop function partOfProviding(text);
+create or replace FUNCTION partOfProviding(text)
+RETURNS REAL
+as 
+$$
+DECLARE
+
+total REAL;
+disease REAL;
+
+BEGIN
+
+SELECT count(ad.adm_date) into total
+
+from  medicaments m 
+inner join admission ad on m.admission_id = ad.id
+;
+
+SELECT count(ad.adm_date) into disease
+
+from  medicaments m
+inner join admission ad on m.admission_id = ad.id
+inner join types t on m.type_id = t.id
+
+where t.typemed = $1;
+
+return disease/total;
+end;
+$$ language plpgsql;  
+select * from partOfProviding('mixture');
+
+
+
+
+drop function providerByTemp(text,integer,integer);
+create or replace FUNCTION providerByTemp(text,integer,integer)
+RETURNS table 
+(
+P_medicament text,
+P_provider text,
+P_temp int
+)
+as 
+$$
+BEGIN
+return query
+SELECT m.name, pr.name, ty.temp
+
+from  medicaments m
+inner join data_info di on m.data_info_id = di.id
+inner join providers pr on di.provider_id = pr.id
+inner join types ty on m.type_id = ty.id
+
+ where ty.temp BETWEEN $2 and $3 and pr.name = $1 ;
+
+end;
+$$ language plpgsql;  
+select * from providerByTemp('TransOcean',1,6);
+
+
+
+
+drop function medFromCountry(text,integer);
+create or replace FUNCTION medFromCountry(text,integer)
+RETURNS table 
+(
+P_medicament text,
+P_country text,
+P_price int
+)
+as 
+$$
+BEGIN
+return query
+SELECT m.name, co.country, m.price
+
+from  medicaments m
+inner join data_info di on m.data_info_id = di.id
+inner join companies cs on di.company_id = cs.id
+inner join countries co on cs.country_id = co.id
+
+ where co.country = $1 and m.price > $2 ;
+
+end;
+$$ language plpgsql;  
+select * from medFromCountry('Russia',200);
+
+
+
+
+drop function partOfChipMeds(integer,integer);
+create or replace FUNCTION partOfChipMeds(integer,integer)
+RETURNS REAL
+as 
+$$
+DECLARE
+
+total REAL;
+goodAge REAL;
+
+BEGIN
+
+SELECT count(t.age) into total
+
+from  medicaments m 
+inner join types t on m.type_id = t.id
+;
+
+SELECT count(t.age) into goodAge
+
+from  medicaments m
+inner join types t on m.type_id = t.id
+
+where t.age > $2 and m.price < $1;
+
+return goodAge/total;
+end;
+$$ language plpgsql;  
+select * from partOfChipMeds(300,4);
+
+
+
+
+drop function get_most_popular(date,date);
+create or replace FUNCTION get_most_popular(date,date)
+RETURNS table 
+(
+P_medicament text,
+P_date date,
+P_count int
+)
+as 
+$$
+BEGIN
+return query
+SELECT m.name, s.sell_date, s.count
+
+from  medicaments m
+inner join selling s on m.selling_id = s.id
+
+ where s.count = (select max(count) from selling where sell_date BETWEEN $1 and $2) ;
+
+end;
+$$ language plpgsql;  
+select * from get_most_popular('2020.08.10','2020.09.10');
+
+
+
+
+create role guest with login password 'userpas';
+create role admin with login password 'admin';
+create role operator with login password 'operator';
+
+
+alter role admin createdb;
+
+
+GRANT insert, update, select on table medicaments, data_info, pharma_info, countries, selling, companies, admission, types, providers to operator;
+
+
+GRANT select on table medicaments, data_info, pharma_info, companies, types, countries to guest;
+
+
+GRANT insert, delete, update, select on table medicaments, data_info, pharma_info, types, companies, admission,countries,selling, providers  to admin;
+
+
+REVOKE EXECUTE ON FUNCTION 
+getType(text),
+sorted(text,text),
+average_price(text),
+max_min_price(text),
+overPrice(text,integer),
+intervalPrice(text,integer,integer),
+chipOfAll(integer),
+numbByInterval(text,integer,integer),
+getNum(text,integer,integer),
+getCompany_desiase(text,text),
+partByCompany(text),
+partOfProviding(text),
+providerByTemp(text,integer,integer),
+medFromCountry(text,integer),
+partOfChipMeds(integer,integer),
+get_most_popular(date,date)
+ FROM public;
+
+
+GRANT EXECUTE ON FUNCTION
+getType(text),
+sorted(text,text),
+max_min_price(text),
+chipOfAll(integer),
+overPrice(text,integer),
+medFromCountry(text,integer),
+get_most_popular(date,date)
+to guest;
+
+
+GRANT EXECUTE ON FUNCTION
+getType(text),
+average_price(text),
+max_min_price(text),
+sorted(text,text),
+max_min_price(text),
+chipOfAll(integer),
+partByCompany(text),
+partOfProviding(text),
+overPrice(text,integer),
+providerByTemp(text,integer,integer),
+medFromCountry(text,integer),
+get_most_popular(date,date)
+to operator;
+
+
+GRANT EXECUTE ON FUNCTION
+getType(text),
+sorted(text,text),
+average_price(text),
+max_min_price(text),
+average_price(text),
+overPrice(text,integer),
+intervalPrice(text,integer,integer),
+chipOfAll(integer),
+numbByInterval(text,integer,integer),
+getNum(text,integer,integer),
+getCompany_desiase(text,text),
+partByCompany(text),
+partOfProviding(text),
+providerByTemp(text,integer,integer),
+medFromCountry(text,integer),
+partOfChipMeds(integer,integer),
+get_most_popular(date,date)
+to admin;
+
+
+
+
+-----------------------------------------------------------------------
+select * from getType('granules');
+
+select * from sorted('granules','date');
+select * from sorted('granules','alphabet');
+select * from sorted('granules','shelf');
+select * from sorted('granules','price');
+
+select * from average_price('pills');
+select * from max_min_price('min');
+select * from max_min_price('max');
+
+select * from overPrice('allergy',50);
+select * from intervalPrice('granules',50,1000);
+select * from chipOfAll(100);
+select * from numbByInterval('twopills',50,1000);
+select * from getNum('twopills',50,1000);
+
+select * from getCompany_desiase('twopills','acne');
+select * from getCompany_desiase('twopills','fungus');
+select * from getCompany_desiase('twopills','constipation');
+
+select * from partByCompany('twopills');
+select * from partOfProviding('mixture');
+select * from providerByTemp('TransOcean',1,6);
+select * from medFromCountry('Russia',200);
+select * from partOfChipMeds(300,4);
+select * from get_most_popular('2020.08.10','2020.09.10');
+-------------------------------------------------------------------------
+
+
+--gues
+select * from getType('granules');
+
+select * from sorted('granules','date');
+select * from sorted('granules','alphabet');
+select * from sorted('granules','shelf');
+select * from sorted('granules','price');
+
+select * from max_min_price('min');
+select * from max_min_price('max');
+
+select * from chipOfAll(100);
+select * from overPrice('allergy',50);
+select * from medFromCountry('Russia',200);
+
+
+
+
+--operator
+select * from getType('granules');
+
+select * from average_price('pills');
+select * from max_min_price('min');
+select * from max_min_price('max');
+
+select * from sorted('granules','date');
+select * from sorted('granules','alphabet');
+select * from sorted('granules','shelf');
+select * from sorted('granules','price');
+
+select * from chipOfAll(100);
+
+select * from partByCompany('twopills');
+select * from partOfProviding('mixture');
+select * from providerByTemp('TransOcean',1,6);
+
+select * from overPrice('allergy',50);
+select * from medFromCountry('Russia',200);
+select * from get_most_popular('2020.08.10','2020.09.10');
+
+
+
+--admin
+select * from getType('granules');
+
+select * from sorted('granules','date');
+select * from sorted('granules','alphabet');
+select * from sorted('granules','shelf');
+select * from sorted('granules','price');
+
+select * from average_price('pills');
+select * from max_min_price('min');
+select * from max_min_price('max');
+
+select * from overPrice('allergy',50);
+select * from intervalPrice('granules',50,1000);
+select * from chipOfAll(100);
+select * from numbByInterval('twopills',50,1000);
+select * from getNum('twopills',50,1000);
+
+select * from getCompany_desiase('twopills','acne');
+select * from getCompany_desiase('twopills','fungus');
+select * from getCompany_desiase('twopills','constipation');
+
+select * from partByCompany('twopills');
+select * from partOfProviding('mixture');
+select * from providerByTemp('TransOcean',1,6);
+select * from medFromCountry('Russia',200);
+select * from partOfChipMeds(300,4);
+select * from get_most_popular('2020.08.10','2020.09.10');
